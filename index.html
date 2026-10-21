@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>邻里守护 在线交互演示</title><link rel="stylesheet" href="./style.css"><script type="module" src="./app.mjs"></script></head>
+<body>
+<header><div><span class="brand">邻里守护</span><span class="label">公开交互演示</span></div><span id="connection" role="status">正在连接</span></header>
+<main>
+  <section class="intro"><p class="eyebrow">GUARD & RESPOND</p><h1>求救之后<br>看见每一步响应</h1><p>在同一个事件中，查看家属通知、志愿者接单、到场与关闭。</p><p class="boundary">GitHub Pages 浏览器模拟 · 数据仅存在当前标签页<br>未连接 MQTT、云端数据库、真实定位、电话或推送<br>无真实硬件接入，不代表临床验证或真实救援服务</p></section>
+  <section class="controls" aria-label="设备模拟与测试时钟"><div><h2>模拟设备</h2><p>主动 SOS 立即通知。摔倒演示模拟单次计时，方案待团队确认。</p></div><div class="button-row"><button data-action="sos" class="primary">发出模拟 SOS</button><button data-action="duplicate">重发同一消息</button><button data-action="fall">触发摔倒候选</button><button data-action="cancel">取消摔倒候选</button></div><div class="clock-row"><span>测试时钟 <strong id="clock">--</strong></span><div><button data-action="advance" data-seconds="30">推进 30 秒</button><button data-action="advance" data-seconds="120">推进 2 分钟</button><button data-action="advance" data-seconds="240">推进 4 分钟</button></div></div><p id="pending">尚无摔倒候选</p></section>
+  <section class="workspace"><aside><h2>查看身份</h2><label for="role">切换合成测试账号</label><select id="role"><option value="family">守护端 · 家属</option><option value="volunteer_1">响应端 · 志愿者 1</option><option value="volunteer_2">响应端 · 志愿者 2</option><option value="volunteer_3">响应端 · 志愿者 3</option><option value="volunteer_4">响应端 · 志愿者 4</option><option value="outsider">无权限测试账号</option></select><p>身份切换仅供合成场景演示，正式应用须独立登录并审核权限。</p><div class="side-title"><h2>可见事件</h2><button id="refresh">刷新</button></div><div id="events"></div></aside><section id="detail" aria-label="事件详情"><div class="empty"><h2>从一次模拟求救开始</h2><p>点击上方“发出模拟 SOS”，这里会出现事件和响应动态。</p></div></section></section>
+  <section class="evidence"><div><h2>通知与发送记录</h2><p>这里展示浏览器模拟通知，不能作为云端发送或手机实际收到的证据。</p></div><div id="notices">等待事件</div></section>
+  <p id="message" role="status" aria-live="polite"></p>
+  <footer>本页仅供参赛作品交互展示，不是急救服务入口。刷新页面将重置模拟数据。规则时间为2分钟和4分钟，窗口归属及跨端协议仍待确认。</footer>
+</main></body></html>

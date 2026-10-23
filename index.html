@@ -1,12 +1,169 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>邻里守护 在线交互演示</title><link rel="stylesheet" href="./style.css"><script type="module" src="./app.mjs"></script></head>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>飞驰守护 在线交互演示</title><style>/* Feichi Guard: warm, accessible community care workspace. */
+:root{font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;color:#302e2c;background:#f5f3ef;font-size:14px;line-height:1.6;--accent:#a44938;--border:#e7e0d9;--muted:#79736b;--surface:#fffefa;scroll-behavior:smooth;scroll-padding-top:24px}
+*{box-sizing:border-box}body{margin:0}button,select{font:inherit}a{color:inherit;text-decoration:none}button{cursor:pointer}button:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #b77b44;outline-offset:4px}button:disabled{opacity:.55;cursor:wait}
+.rail{width:224px;position:fixed;inset:0 auto 0 0;background:#322c29;color:#e9ded4;padding:30px 20px;display:flex;flex-direction:column;z-index:5;border-right:1px solid #53443c}.identity{display:flex;align-items:center;gap:12px;font-size:23px;font-weight:700;letter-spacing:.08em;margin-bottom:49px}.brand-mark{display:grid;place-items:center;background:#bb735a;color:#fff9f0;width:42px;height:44px;border-radius:13px;font-size:22px}.identity small{display:block;font-size:8px;font-weight:400;letter-spacing:.18em;color:#beaaa0;margin-top:3px}.nav-label{font-size:10px;color:#b6a69a;letter-spacing:.14em;margin:0 12px 14px}.rail>a:not(.identity){font-size:13px;display:flex;gap:17px;align-items:center;padding:14px 14px;border-radius:8px;margin:3px 0;color:#e4d6cb}.rail>a:not(.identity):hover{background:#514139}.rail .nav-current{background:#68483c;color:#fff9f3!important;box-shadow:inset 3px 0 #d69b7f}.rail a span:first-child{font-size:10px;color:#c5aa98}.rail-note{margin-top:auto;padding:24px 8px 4px;border-top:1px solid #57483e}.rail-note b{font-size:14px;color:#f2e1d2}.rail-note p{font-size:11px;color:#c1afa1;line-height:1.9}.rail-note small{color:#d3a98a;font-size:10px}
+.app-shell{margin-left:224px}header{height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;background:#fffdf9;border-bottom:1px solid var(--border)}.breadcrumb{font-size:12px;color:var(--muted)}.breadcrumb span{padding:0 13px;color:#b6aaa0}.breadcrumb strong{font-weight:500;color:#332e29}.top-status{display:flex;align-items:center;gap:18px;font-size:11px}.label{padding:4px 10px;border:1px solid #dfd4c5;border-radius:20px;color:#8f6651}#connection{color:#75614f}#connection:before{content:"";display:inline-block;width:6px;height:6px;background:#b9805a;border-radius:50%;margin-right:7px}
+main{max-width:1510px;margin:auto;padding:26px 32px 0}.intro{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:28px 32px;background:linear-gradient(105deg,#fffdf9 0%,#f5e4d6 100%);border:1px solid #e7d6c6;border-radius:12px;margin-bottom:14px}.eyebrow{font-size:9px;letter-spacing:.26em;color:#a16a4e;font-weight:600;margin:0 0 10px}h1{font-size:30px;line-height:1.4;letter-spacing:.02em;margin:0 0 9px;font-weight:650}h2{font-size:16px;margin:0 0 8px;font-weight:600}.intro p:not(.eyebrow){font-size:12px;color:#7e6b5d;margin:0 0 18px}.intro-tags{display:flex;gap:22px;font-size:11px;color:#9b6950}.intro-tags span:before{content:"·";margin-right:6px}.intro-aside{border-left:1px solid #d7ba9e;min-width:214px;padding-left:28px}.intro-aside>span{font-size:10px;letter-spacing:.3em;color:#a36a4c}.intro-aside strong{display:block;font-family:"Microsoft YaHei",sans-serif;font-size:24px;font-weight:400;line-height:1.5;color:#744c36;margin:6px 0}.intro-aside small{color:#9b7a62;font-size:10px}
+.boundary{font-size:11px;color:#807368;padding:8px 12px;border:1px solid var(--border);border-radius:6px;background:#faf7f2;margin:0 0 20px}.boundary summary{cursor:pointer}.boundary summary span{padding-left:14px;color:#9b8471}.boundary p{margin:8px 0 2px;line-height:1.8}.overview-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}.overview-metrics>div{padding:17px 20px 14px;background:var(--surface);border:1px solid var(--border);border-radius:9px}.overview-metrics>div>span{font-size:11px;color:#7e7267}.overview-metrics strong{display:flex;gap:10px;align-items:baseline;font-size:29px;font-weight:600;color:#744433;line-height:1.4;margin:5px 0 8px}.overview-metrics strong small{font-size:10px;font-weight:400;color:#9a8a7e}.overview-metrics p{font-size:10px;color:#94877b;border-top:1px solid #eee7df;padding-top:9px;margin:0}
+button{border:1px solid #dfd4c8;background:#fffefa;color:#6a5344;padding:8px 13px;border-radius:5px;font-size:12px;transition:background .15s}button:hover{background:#f5e9df;border-color:#ba9379}button.primary{background:#a44938;color:white;border-color:#a44938;box-shadow:0 3px 8px #a4493815}button.primary:hover{background:#8c3e31}button.danger{color:#ac493b;border-color:#d9b3a6;background:#fff8f4}.section-number{font-size:10px;color:#af7b59;letter-spacing:.05em;padding-right:10px}
+.controls{background:var(--surface);border:1px solid var(--border);padding:20px 24px;margin-bottom:20px;border-radius:9px}.controls>div:first-child{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}.controls p,.evidence p{font-size:11px;color:#8c8074;margin:0 0 13px}.button-row{display:flex;gap:8px;flex-wrap:wrap}.clock-row{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #eee7df;padding-top:13px;margin-top:15px;font-size:11px;color:#8b7c70;gap:12px}.clock-row strong{margin-left:9px;font-weight:500;color:#645346;font-variant-numeric:tabular-nums}.clock-row button{margin-left:5px;padding:5px 10px;font-size:11px}#pending{margin:9px 0 0;font-size:10px;color:#a17d58}
+.workspace{display:grid;grid-template-columns:242px minmax(0,1fr);background:var(--surface);border:1px solid var(--border);border-radius:9px;min-height:430px;overflow:hidden}.workspace aside{padding:24px 20px;background:#fbf7f0;border-right:1px solid var(--border)}aside label,aside p{font-size:10px;color:#998575}select{display:block;width:100%;padding:9px 8px;border:1px solid #dfd1c2;background:white;border-radius:5px;color:#6d4e3b;margin-top:8px;font-size:11px}.side-title{display:flex;justify-content:space-between;align-items:center;margin:24px 0 13px}.side-title h2{margin:0;font-size:13px}.side-title button{padding:3px 9px;font-size:10px}.event-item{display:block;text-align:left;width:100%;padding:12px;margin-bottom:9px;background:white}.event-item.active{background:#fff3e9;border-color:#d6ad91;border-left:3px solid #b65e43}.event-item strong{font-size:12px;font-weight:600}.event-item small{display:block;font-size:9px;color:#b6a292;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:6px}.event-item span{display:block;font-size:10px;color:#9f785f;margin-top:4px}#detail{padding:24px 28px;min-width:0}.empty{padding:72px 24px;text-align:center;color:#ab9580}.empty h2{color:#795c46;font-size:18px}.empty p{font-size:12px}.detail-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.detail-head h2{font-size:22px;margin:0}.status{color:#9c5a39;background:#f5e7d7;font-size:11px;padding:4px 11px;white-space:nowrap;border-radius:4px}.meta{font-size:10px;word-break:break-all;color:#a89583;margin:7px 0}#detail>p:not(.meta){font-size:12px;color:#77523b}.location{background:#f9f3e9;border-left:3px solid #cba47a;padding:12px 16px;margin:14px 0;border-radius:0 6px 6px 0}.location strong{font-size:12px;color:#775139}.location p{margin:3px 0;font-size:11px;color:#998169}.responses{width:100%;border-collapse:collapse;margin:14px 0 16px;font-size:12px}.responses th{text-align:left;font-weight:500;color:#947d68;background:#fcf8f2;font-size:10px}.responses td,.responses th{padding:10px 12px;border-bottom:1px solid #eee7df}.responses td{color:#68564a}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.timeline{margin-top:18px;padding-top:12px;border-top:1px solid #eee7df;font-size:10px;color:#a28a73}.timeline span{display:inline-block;margin:0 14px 5px 0}.timeline span:before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:#c29a77;margin-right:6px}
+.evidence{margin-top:20px;padding:20px 24px;background:var(--surface);border:1px solid var(--border);border-radius:9px}#notices{display:flex;gap:8px;flex-wrap:wrap;font-size:10px;color:#a1846b}#notices span{background:#f8f0e6;padding:7px 10px;border:1px solid #eee2d3;border-radius:4px}#message{position:sticky;bottom:15px;background:#674739;color:#fff4e9;padding:11px 18px;box-shadow:0 6px 24px #4431261f;min-height:40px;border-radius:6px;font-size:12px;z-index:6}#message:empty{display:none}footer{font-size:10px;color:#a28e7c;padding:24px 0 28px;line-height:1.9}footer b{color:#7d5a43;font-weight:500}
+@media(min-width:1550px){main{padding-left:42px;padding-right:42px}.workspace{grid-template-columns:270px minmax(0,1fr)}}
+@media(max-width:1150px){.rail{width:190px;padding:25px 15px}.identity{font-size:19px}.app-shell{margin-left:190px}main{padding:22px 22px 0}.intro{padding:24px}.intro-aside{min-width:160px;padding-left:18px}h1{font-size:25px}.overview-metrics{gap:10px}.overview-metrics>div{padding:15px}.clock-row{flex-wrap:wrap}.workspace{grid-template-columns:210px minmax(0,1fr)}}
+@media(max-width:850px){.rail{position:static;width:auto;padding:16px 18px;display:flex;flex-direction:row;align-items:center;gap:9px;overflow:auto}.identity{margin:0 auto 0 0;min-width:150px;font-size:18px}.brand-mark{width:32px;height:34px;font-size:17px}.identity small{font-size:7px}.nav-label,.rail-note,.rail>a:not(.identity)>span{display:none}.rail>a:not(.identity){white-space:nowrap;padding:8px 10px;font-size:11px}.app-shell{margin:0}header{padding:0 20px;height:54px}.intro-aside{display:none}.intro{padding:22px}.intro-tags{gap:14px}.overview-metrics{grid-template-columns:repeat(2,1fr)}.workspace{grid-template-columns:210px minmax(0,1fr)}.top-status{gap:8px}.label{display:none}}
+@media(max-width:600px){main{padding:18px 14px 0}.rail>a:not(.identity){display:none}.identity{margin:0}.rail{padding:14px 18px}.breadcrumb{font-size:10px}#connection{font-size:10px}h1{font-size:24px}.intro p:not(.eyebrow){font-size:11px}.intro-tags{font-size:10px;gap:9px}.intro{padding:20px 18px}.controls{padding:18px}.clock-row{display:block}.clock-row>div{display:flex;flex-wrap:wrap;margin-top:10px;gap:5px}.clock-row button{margin:0}.workspace{grid-template-columns:1fr}.workspace aside{border-right:0;border-bottom:1px solid var(--border);padding:20px}#detail{padding:22px 20px}.overview-metrics>div{padding:13px}.overview-metrics strong{font-size:27px}.overview-metrics p{font-size:9px}.evidence{padding:18px}.boundary summary span{padding-left:4px}}
+</style></head>
 <body>
-<header><div><span class="brand">邻里守护</span><span class="label">公开交互演示</span></div><span id="connection" role="status">正在连接</span></header>
+<nav class="rail" aria-label="工作台导航">
+<a class="identity" href="#overview"><b class="brand-mark">守</b><span>飞驰守护<small>COMMUNITY CARE</small></span></a>
+<p class="nav-label">社区应急协同</p>
+<a href="#overview" class="nav-current"><span>01</span>协作总览</a>
+<a href="#workspace"><span>02</span>事件与响应</a>
+<a href="#evidence"><span>03</span>通知记录</a>
+<a href="#controls"><span>04</span>场景演示</a>
+<div class="rail-note"><b>让求助得到回应</b><p>连接老人、家属与邻里，<br>让每一步协作清楚可见。</p><small>演示环境 · 合成数据</small></div>
+</nav>
+<div class="app-shell">
+<header><div class="breadcrumb">社区协作工作台 <span>/</span> <strong>协作总览</strong></div><div class="top-status"><span class="label">浏览器模拟</span><span id="connection" role="status">正在连接</span></div></header>
 <main>
-  <section class="intro"><p class="eyebrow">GUARD & RESPOND</p><h1>求救之后<br>看见每一步响应</h1><p>在同一个事件中，查看家属通知、志愿者接单、到场与关闭。</p><p class="boundary">GitHub Pages 浏览器模拟 · 数据仅存在当前标签页<br>未连接 MQTT、云端数据库、真实定位、电话或推送<br>无真实硬件接入，不代表临床验证或真实救援服务</p></section>
-  <section class="controls" aria-label="设备模拟与测试时钟"><div><h2>模拟设备</h2><p>主动 SOS 立即通知。摔倒演示模拟单次计时，方案待团队确认。</p></div><div class="button-row"><button data-action="sos" class="primary">发出模拟 SOS</button><button data-action="duplicate">重发同一消息</button><button data-action="fall">触发摔倒候选</button><button data-action="cancel">取消摔倒候选</button></div><div class="clock-row"><span>测试时钟 <strong id="clock">--</strong></span><div><button data-action="advance" data-seconds="30">推进 30 秒</button><button data-action="advance" data-seconds="120">推进 2 分钟</button><button data-action="advance" data-seconds="240">推进 4 分钟</button></div></div><p id="pending">尚无摔倒候选</p></section>
-  <section class="workspace"><aside><h2>查看身份</h2><label for="role">切换合成测试账号</label><select id="role"><option value="family">守护端 · 家属</option><option value="volunteer_1">响应端 · 志愿者 1</option><option value="volunteer_2">响应端 · 志愿者 2</option><option value="volunteer_3">响应端 · 志愿者 3</option><option value="volunteer_4">响应端 · 志愿者 4</option><option value="outsider">无权限测试账号</option></select><p>身份切换仅供合成场景演示，正式应用须独立登录并审核权限。</p><div class="side-title"><h2>可见事件</h2><button id="refresh">刷新</button></div><div id="events"></div></aside><section id="detail" aria-label="事件详情"><div class="empty"><h2>从一次模拟求救开始</h2><p>点击上方“发出模拟 SOS”，这里会出现事件和响应动态。</p></div></section></section>
-  <section class="evidence"><div><h2>通知与发送记录</h2><p>这里展示浏览器模拟通知，不能作为云端发送或手机实际收到的证据。</p></div><div id="notices">等待事件</div></section>
+  <section class="intro" id="overview"><div><p class="eyebrow">CARE CONNECTS US</p><h1>每一次求助，都有迹可循</h1><p>面向老年人的社区应急协作 · 从求助接收到响应反馈</p><div class="intro-tags"><span>家属知情</span><span>邻里自愿响应</span><span>进展共同可见</span></div></div><div class="intro-aside"><span>飞驰守护</span><strong>守望相助<br>从身边开始</strong><small>社区救助与协同治理方案</small></div></section>
+  <details class="boundary"><summary>演示说明 <span>合成场景 · 无真实呼叫</span></summary><p>当前页面使用合成数据，状态保存在本标签页。刷新后重置，不连接真实电话、推送或云端数据库。本页尚未接入真实手环与正式业务 APP，实物 BLE 通信另有演示。不是实际急救入口。</p></details>
+  <section class="overview-metrics" aria-label="当前可见事件概况">
+  <div><span>正在协作</span><strong id="metric-active">0<small>个事件</small></strong><p>当前身份可见的未关闭事件</p></div>
+  <div><span>响应参与</span><strong id="metric-responders">0<small>人次</small></strong><p>可见事件中的当前响应记录</p></div>
+  <div><span>已结束事件</span><strong id="metric-closed">0<small>个事件</small></strong><p>保留处理结果与反馈</p></div>
+  <div><span>单次协作上限</span><strong>3<small>人 / 事件</small></strong><p>自愿接单，状态共同可见</p></div>
+  </section>
+  <section id="controls" class="controls" aria-label="设备模拟与测试时钟"><div><h2><span class="section-number">01</span>场景演示</h2><p>主动 SOS 立即通知。摔倒演示模拟单次计时，方案待团队确认。</p></div><div class="button-row"><button data-action="sos" class="primary">发出模拟 SOS</button><button data-action="duplicate">重发同一消息</button><button data-action="fall">触发摔倒候选</button><button data-action="cancel">取消摔倒候选</button></div><div class="clock-row"><span>测试时钟 <strong id="clock">--</strong></span><div><button data-action="advance" data-seconds="30">推进 30 秒</button><button data-action="advance" data-seconds="120">推进 2 分钟</button><button data-action="advance" data-seconds="240">推进 4 分钟</button></div></div><p id="pending">尚无摔倒候选</p></section>
+  <section id="workspace" class="workspace"><aside><h2>参与视角</h2><label for="role">切换合成测试账号</label><select id="role"><option value="family">守护端 · 家属</option><option value="volunteer_1">响应端 · 志愿者 1</option><option value="volunteer_2">响应端 · 志愿者 2</option><option value="volunteer_3">响应端 · 志愿者 3</option><option value="volunteer_4">响应端 · 志愿者 4</option><option value="outsider">无权限测试账号</option></select><p>身份切换仅供合成场景演示，正式应用须独立登录并审核权限。</p><div class="side-title"><h2>可见事件</h2><button id="refresh">刷新</button></div><div id="events"></div></aside><section id="detail" aria-label="事件详情"><div class="empty"><h2>从一次模拟求救开始</h2><p>点击上方“发出模拟 SOS”，这里会出现事件和响应动态。</p></div></section></section>
+  <section id="evidence" class="evidence"><div><h2><span class="section-number">03</span>通知与发送记录</h2><p>这里展示浏览器模拟通知，不能作为云端发送或手机实际收到的证据。</p></div><div id="notices">等待事件</div></section>
   <p id="message" role="status" aria-live="polite"></p>
-  <footer>本页仅供参赛作品交互展示，不是急救服务入口。刷新页面将重置模拟数据。规则时间为2分钟和4分钟，窗口归属及跨端协议仍待确认。</footer>
-</main></body></html>
+  <footer><b>飞驰守护</b> · 本页仅供参赛作品交互展示，不是急救服务入口。刷新页面将重置模拟数据。规则时间为2分钟和4分钟，窗口归属及跨端协议仍待确认。</footer>
+</main></div><script type="module">// Public illustration only. Every role, event, location and notification is
+// synthetic and exists in this browser tab. This is not backend authorization.
+function createDemo() {
+ const roles=['family','volunteer_1','volunteer_2','volunteer_3','volunteer_4','outsider'];
+ let now=Date.UTC(2026,9,21,8),serial=0,selected,last,pending;
+ const events=[],notices=[],deliveries=[];
+ const fail=(code)=>{throw new Error(code);};
+ const validRole=(role)=>roles.includes(role)||fail('INVALID_ROLE');
+ const active=(e)=>e.responses.filter(r=>r.status!=='withdrawn');
+ const allowed=(role)=>role!=='outsider';
+ function change(e,kind){e.event_version++;e.changes.push({event_version:e.event_version,kind});notices.push({event_id:e.event_id,kind});}
+ function open(type){
+  const e={event_id:`evt_demo_${++serial}`,event_type:type,status:'active',opened:now,event_version:0,response_intensity:'initial',responses:[],feedback:[],changes:[],location:{coordinate:{latitude:31.23041,longitude:121.47371},crs:'WGS84',accuracy_m:60}};
+  events.push(e);selected=e.event_id;change(e,'event_opened');return e;
+ }
+ function tick(){
+  if(pending?.state==='pending_confirmation'&&now-pending.started>=30000){pending.state='active';pending.event_id=open('fall').event_id;}
+  for(const e of events){
+   if(e.status!=='active'||active(e).length)continue;
+   const age=now-e.opened;
+   if(age>=120000&&e.response_intensity==='initial'){
+    e.response_intensity='expanded';change(e,'event_escalated');deliveries.push({event_id:e.event_id,channel:'phone',state:'mock_recorded',kind:'expanded'});
+   }
+   if(age>=240000&&e.response_intensity==='expanded'){e.response_intensity='escalated';change(e,'event_escalated');}
+  }
+ }
+ function act({action,role='family',event_id,seconds,assessment}){
+  validRole(role);
+  if(action==='sos'){const e=open('sos');last=e.event_id;return{event_id:e.event_id};}
+  if(action==='duplicate'){if(!last)fail('NO_FRAME_TO_REPEAT');return{event_id:last,duplicate:true};}
+  if(action==='fall'){if(pending?.state==='pending_confirmation')fail('FALL_ALREADY_PENDING');pending={incident_id:`inc_demo_${++serial}`,started:now,state:'pending_confirmation'};return{incident_id:pending.incident_id};}
+  if(action==='cancel'){if(pending?.state!=='pending_confirmation')fail('NO_FALL_PENDING');pending.state='cancelled';return{cancelled:true};}
+  if(action==='advance'){if(![30,120,240].includes(seconds))fail('INVALID_ADVANCE');now+=seconds*1000;tick();return{advanced_seconds:seconds};}
+  if(!['accept','en_route','arrived','withdraw','close','feedback'].includes(action))fail('UNKNOWN_ACTION');
+  const e=events.find(x=>x.event_id===event_id);if(!e||!allowed(role))fail('NOT_FOUND');
+  const own=e.responses.find(r=>r.volunteer_id===role&&r.status!=='withdrawn');
+  if(action==='feedback'){
+   if(e.status!=='closed')fail('EVENT_NOT_CLOSED');if(role!=='family'&&own?.status!=='arrived')fail('FORBIDDEN');
+   if(!['real','false_alarm','uncertain'].includes(assessment))fail('INVALID_ASSESSMENT');
+   const prior=e.feedback.find(f=>f.role===role);if(prior)prior.assessment=assessment;else e.feedback.push({role,assessment});return{saved:true};
+  }
+  if(e.status!=='active')fail('EVENT_CLOSED');
+  if(action==='close'){if(role!=='family'&&own?.status!=='arrived')fail('FORBIDDEN');e.status='closed';change(e,'event_closed');}
+  else{
+   if(!role.startsWith('volunteer_'))fail('FORBIDDEN');
+   if(action==='accept'){
+    if(own)return{event_id};if(active(e).length>=3)fail('RESPONSE_LIMIT_REACHED');
+    e.responses.push({volunteer_id:role,status:'accepted'});change(e,'response_accepted');
+   }else{
+    if(!own)fail('NO_RESPONSE');
+    if(action==='withdraw'){if(own.status==='arrived')fail('INVALID_RESPONSE_STATUS');own.status='withdrawn';change(e,'response_updated');}
+    else{
+     if(!['accepted','en_route'].includes(own.status))fail('INVALID_RESPONSE_STATUS');
+     if(action==='en_route'&&own.status!=='accepted')fail('INVALID_RESPONSE_STATUS');
+     const first=action==='arrived'&&!e.responses.some(r=>r.status==='arrived');own.status=action;change(e,'response_updated');if(first)change(e,'first_arrival');
+    }
+   }
+  }
+  return{event_id};
+ }
+ function state(role='family'){
+  validRole(role);const visible=allowed(role)?structuredClone(events):[];
+  for(const e of visible){
+   e.responder_count=active(e).length;
+   if(role!=='family'&&!active(e).some(r=>r.volunteer_id===role)){
+    e.location.coordinate={latitude:31.23,longitude:121.47};delete e.location.accuracy_m;
+   }
+  }
+  const ids=new Set(visible.map(e=>e.event_id));
+  return{role,now:new Date(now).toISOString(),events:visible,selected_event_id:selected,pending:allowed(role)?structuredClone(pending??null):null,notifications:structuredClone(notices.filter(n=>ids.has(n.event_id))),deliveries:structuredClone(deliveries.filter(n=>ids.has(n.event_id))),mode:'browser_simulation',real_send:false};
+ }
+ return{act,state};
+}
+
+const demo=createDemo();
+async function demoRequest(url,options={}){
+ try{
+  const data=url==='/api/session'?{nonce:'public-simulation'}:url.startsWith('/api/state?')?demo.state(new URLSearchParams(url.split('?')[1]).get('role')):demo.act(JSON.parse(options.body));
+  return{ok:true,status:200,json:async()=>data};
+ }catch(error){return{ok:false,status:error.message==='RESPONSE_LIMIT_REACHED'?409:400,json:async()=>({error:{code:error.message}})};}
+}
+const $ = (id) => document.getElementById(id);
+const names = { sos:'主动 SOS', fall:'摔倒求救', active:'处理中', closed:'已关闭', accepted:'已接单', en_route:'在路上', arrived:'已到场', treating:'处理中', withdrawn:'已退出', initial:'初始通知', expanded:'已扩至 2km', escalated:'已升级并提醒拨 120', event_opened:'事件通知', location_updated:'位置更新', response_accepted:'有人接单', response_updated:'响应状态更新', responder_arrived:'响应者到场', first_arrival:'首人到场', event_closed:'事件关闭', event_escalated:'响应升级', phone:'家属电话', push:'系统推送', mqtt:'MQTT', pending_confirmation:'等待取消窗口', cancelled:'已取消', broker_accepted:'浏览器已模拟受理', mock_recorded:'仅记录模拟发送', pending:'等待执行', 'NO_ACTIVE_EVENT':'事件已结束', NOT_FOUND:'当前身份无权操作或查看此事件', CAPACITY_REACHED:'已有 3 人接单，不能再加入', RESPONSE_LIMIT_REACHED:'已有 3 人接单，不能再加入', EVENT_FULL:'已有 3 人接单，不能再加入', EVENT_CLOSED:'事件已关闭', NO_FRAME_TO_REPEAT:'请先发出模拟 SOS', NO_FALL_PENDING:'请先触发摔倒候选', FALL_ALREADY_PENDING:'已有摔倒候选，请先取消或推进 30 秒' };
+const text = (value) => names[value] || value;
+let nonce; let state; let selected; let busy = false;
+function element(tag, content, className) { const node = document.createElement(tag); if (content !== undefined) node.textContent = content; if (className) node.className = className; return node; }
+function button(label, action, extra = {}, className = '') { const b = element('button', label, className); b.addEventListener('click', () => act({ action, ...extra })); return b; }
+function render() {
+  for (const [id,value,unit] of [
+    ['metric-active',state.events.filter(e=>e.status==='active').length,'个事件'],
+    ['metric-responders',state.events.reduce((n,e)=>n+e.responder_count,0),'人次'],
+    ['metric-closed',state.events.filter(e=>e.status==='closed').length,'个事件']
+  ]) { const node=$(id); if(node) node.replaceChildren(document.createTextNode(String(value)),element('small',unit)); }
+
+  $('clock').textContent = new Date(state.now).toLocaleString('zh-CN', { hour12:false });
+  $('pending').textContent = state.pending ? `摔倒候选：${text(state.pending.state)}。仅模拟单次 30 秒窗口。` : '尚无摔倒候选';
+  const list = $('events'); list.replaceChildren();
+  if (!state.events.some((e) => e.event_id === selected)) selected = state.events.find((e) => e.event_id === state.selected_event_id)?.event_id || state.events[0]?.event_id;
+  for (const e of state.events) { const b = element('button', undefined, 'event-item' + (e.event_id === selected ? ' active' : '')); b.append(element('strong', text(e.event_type)), element('span', `${text(e.status)} · ${e.responder_count}/3 人`), element('small', e.event_id)); b.addEventListener('click', () => { selected = e.event_id; render(); }); list.append(b); }
+  if (!state.events.length) list.append(element('p', state.role === 'outsider' ? '权限检查生效：这个身份看不到事件。' : '暂无可见事件'));
+  const detail = $('detail'); detail.replaceChildren(); const e = state.events.find((event) => event.event_id === selected);
+  if (!e) { const empty = element('div', undefined, 'empty'); empty.append(element('h2', '等待可见事件'), element('p', '从上方发出模拟 SOS，或切换有权限的身份。')); detail.append(empty); }
+  else {
+    const head = element('div', undefined, 'detail-head'); head.append(element('h2', text(e.event_type)), element('span', text(e.status), 'status')); detail.append(head, element('p', `${e.event_id} · 版本 ${e.event_version}`, 'meta'), element('p', `${text(e.response_intensity)} · 当前响应 ${e.responder_count}/3 人`));
+    const location = element('div', undefined, 'location'); location.append(element('strong', '事件位置'));
+    if (e.location?.coordinate) { const c = e.location.coordinate; location.append(element('p', `${c.latitude.toFixed(5)}, ${c.longitude.toFixed(5)} · ${e.location.crs}`), element('p', `合成定位证据 · ${e.location.accuracy_m ? '估计误差 ' + e.location.accuracy_m + 'm' : '接单前仅展示粗略范围'}`)); }
+    else location.append(element('p', '暂无有效位置。当前没有位置输入。'));
+    location.append(element('p', '楼层未知，证据不足。未连接地图 SDK。')); detail.append(location);
+    if (e.sensor_facts) detail.append(element('p', `传感器事实：撞击峰值 ${e.sensor_facts.impact_peak_g ?? '未知'}g，静止 ${e.sensor_facts.stillness_seconds ?? '未知'}s。仅透传事实。`, 'meta'));
+    const table = element('table', undefined, 'responses'); const tr = element('tr'); for (const s of ['响应者','当前状态']) tr.append(element('th', s)); table.append(tr); for (const r of e.responses) { const row=element('tr'); row.append(element('td', '志愿者 ' + r.volunteer_id.split('_').at(-1)),element('td',text(r.status))); table.append(row); } if (!e.responses.length) { const row=element('tr'); row.append(element('td','等待志愿者接单'),element('td','尚无人接单')); table.append(row); } detail.append(table);
+    const actions=element('div',undefined,'actions'); const own=e.responses.find((r)=>r.volunteer_id===state.role && r.status!=='withdrawn');
+    if(e.status==='active') { if(state.role.startsWith('volunteer_')) { if(!own) actions.append(button('我要接单','accept',{ event_id:e.event_id },'primary')); else { if(own.status==='accepted') actions.append(button('我已出发','en_route',{ event_id:e.event_id },'primary')); if(['accepted','en_route'].includes(own.status)) actions.append(button('我已到场','arrived',{ event_id:e.event_id }),button('退出响应','withdraw',{event_id:e.event_id})); } } if(state.role==='family'||['arrived','treating'].includes(own?.status)) actions.append(button('关闭此事件','close',{event_id:e.event_id},'danger')); }
+    if(e.status==='closed'&&(state.role==='family'||['arrived','treating'].includes(own?.status))) actions.append(button('评价：真实求救','feedback',{event_id:e.event_id,assessment:'real'}),button('评价：误报','feedback',{event_id:e.event_id,assessment:'false_alarm'}),button('评价：不确定','feedback',{event_id:e.event_id,assessment:'uncertain'}));
+    detail.append(actions); if(e.response_intensity==='escalated') detail.append(element('p','强提示：必要时请由用户主动拨打 120。本演示不会拨号。'));
+    if(e.responses.some((r)=>r.status==='arrived')) detail.append(element('p','已有响应者到场，其他在途人员自行决定是否返回。'));
+    const timeline=element('div',undefined,'timeline'); for(const change of e.changes.slice(-8)) timeline.append(element('span',`v${change.event_version} ${text(change.kind)}`)); detail.append(timeline);
+  }
+  const notices=$('notices'); notices.replaceChildren(); for(const n of state.notifications.slice(-6)) notices.append(element('span',`${text(n.kind)} · 浏览器模拟通知`));
+  const phone=state.deliveries.filter((d)=>d.channel==='phone'); if(phone.length) notices.append(element('span',`家属电话：${text(phone.at(-1).state)}，没有实际呼叫`)); if(!notices.childNodes.length) notices.textContent='等待事件';
+}
+async function refresh(){ const response=await demoRequest('/api/state?role='+encodeURIComponent($('role').value)); const data=await response.json(); if(!response.ok)throw new Error(data.error?.code||'连接失败'); state=data;render(); }
+async function act(body){ if(busy)return; busy=true; document.querySelectorAll('button').forEach((b)=>b.disabled=true); try{ const r=await demoRequest('/api/action',{method:'POST',headers:{'content-type':'application/json','x-demo-nonce':nonce},body:JSON.stringify({role:$('role').value,...body})}); const data=await r.json(); if(!r.ok)throw new Error(text(data.error?.code||'操作失败')+(r.status===409?'（状态冲突，请刷新核对）':'')); if(body.action==='sos')selected=data.event_id; if(body.action==='advance')selected=null; $('message').textContent=body.action==='duplicate'?`模拟识别重复消息，事件编号保持 ${data.event_id}`:body.action==='advance'?`测试时钟已推进 ${body.seconds} 秒，正式时间配置保持不变。`:'操作已在浏览器模拟完成。'; await refresh(); }catch(error){$('message').textContent=error.message;}finally{busy=false;document.querySelectorAll('button').forEach((b)=>b.disabled=false);} }
+for(const b of document.querySelectorAll('[data-action]'))b.addEventListener('click',()=>act({action:b.dataset.action,...(b.dataset.seconds?{seconds:Number(b.dataset.seconds)}:{})}));
+$('role').addEventListener('change',()=>refresh().catch((e)=>$('message').textContent=e.message)); $('refresh').addEventListener('click',()=>refresh().catch((e)=>$('message').textContent=e.message));
+try{const response=await demoRequest('/api/session');nonce=(await response.json()).nonce;await refresh();$('connection').textContent='浏览器模拟已就绪';}catch(error){$('connection').textContent='连接失败';$('message').textContent=error.message;}
+</script></body></html>
